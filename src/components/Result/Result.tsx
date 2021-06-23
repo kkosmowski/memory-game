@@ -1,7 +1,11 @@
 import { ReactElement } from 'react';
 
-export function Result(): ReactElement {
+interface Props {
+  total: number;
+}
+
+export function Result({ total }: Props): ReactElement {
   return (
-    <span>Current score: 0/12</span> //@todo change to real score
+    <span>Current score: 0/{ total }</span> //@todo change to real score
   );
 }

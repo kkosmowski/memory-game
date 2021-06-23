@@ -13,11 +13,13 @@ export function Memory({ settings }: Props): ReactElement {
   return (
     <MemoryWrapper>
       <TopRow>
-        <Result />
+        <Result
+          total={ settings.cardsCount / 2 }
+        />
         <Timer />
       </TopRow>
 
-      <Board />
+      <Board settings={ settings } />
     </MemoryWrapper>
   );
 }

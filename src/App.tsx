@@ -22,9 +22,17 @@ function App() {
     setInitialized(true);
   };
 
+  const onSettingsChange = (newSettings: GameSettings): void => {
+    setSettings(newSettings);
+  };
+
   return initialized
     ? <Memory settings={ settings } />
-    : <StartScreen onStart={ onStart } />;
+    : <StartScreen
+      onStart={ onStart }
+      onSettingsChange={ onSettingsChange }
+      gameSettings={ settings }
+    />;
 }
 
 export default App;

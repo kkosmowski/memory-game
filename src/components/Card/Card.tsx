@@ -19,4 +19,5 @@ const MemoryCard = styled(MaterialCard)`
   justify-content: center;
   align-items: center;
   font-size: 48px;
+  font-family: 'Shippori Mincho', 'Times New Roman', serif;
 `;

@@ -1,16 +1,67 @@
 import Button from '@material-ui/core/Button';
-import { ReactElement } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { GameSettings } from '../../interfaces/game-settings.interface';
+import { CustomSelect } from './CustomSelect';
+import { Difficulty } from '../../enums/difficulty.enum';
+import { BoardSize } from '../../enums/board-size.enum';
+import { getBoardSizeFromGameSettings } from '../../utils/get-board-size-from-game-settings.util';
 
 interface Props {
   onStart: () => void;
+  onSettingsChange: (s: GameSettings) => void;
+  gameSettings: GameSettings;
 }
 
-export function StartScreen({ onStart }: Props): ReactElement {
+export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props): ReactElement {
+  const [settings, setSettings] = useState<GameSettings>(gameSettings);
+  const [selectedSize, setSelectedSize] = useState<BoardSize>(getBoardSizeFromGameSettings(gameSettings));
   const instructions = `Hello!\nTo start the game, press the button below.\nGood luck!`;
+  const difficulties = Object.values(Difficulty);
+  const sizes = Object.values(BoardSize);
+
+  useEffect(() => {
+    setSettings(gameSettings);
+  }, [gameSettings]);
+
+  const onSizeChange = (event: ChangeEvent<{ value: unknown }>) => {
+    const size = event.target.value as BoardSize;
+    setSelectedSize(size);
+    const [rows, _, cols] = size.split('');
+    const newSettings: GameSettings = {
+      ...settings,
+      cardsCount: +rows * +cols,
+      rows: +rows,
+      cols: +cols,
+    };
+    onSettingsChange(newSettings);
+  };
+
+  const onDifficultyChange = (event: ChangeEvent<{ value: unknown }>) => {
+    const newSettings: GameSettings = {
+      ...settings,
+      difficulty: event.target.value as Difficulty,
+    };
+    onSettingsChange(newSettings);
+  };
+
   return (
     <>
       <InstructionsText>{ instructions }</InstructionsText>
+
+      <CustomSelect
+        onChange={ onSizeChange }
+        options={ sizes }
+        value={ selectedSize }
+        label="Size"
+      />
+      <CustomSelect
+        onChange={ onDifficultyChange }
+        options={ difficulties }
+        value={ settings.difficulty }
+        label="Difficulty"
+      />
+
       <Button onClick={ onStart } variant="contained" color="primary">Begin</Button>
     </>
   );
