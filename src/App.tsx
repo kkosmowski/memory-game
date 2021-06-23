@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Memory } from './components/Memory/Memory';
+import { useState } from 'react';
+import { StartScreen } from './components/StartScreen/StartScreen';
+import { GameSettings } from './interfaces/game-settings.interface';
+import { Difficulty } from './enums/difficulty.enum';
+
+const cols = 4;
+const rows = 3;
+
+const defaultGameSettings: GameSettings = {
+  cardsCount: cols * rows,
+  rows,
+  cols,
+  difficulty: Difficulty.Relaxing,
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [settings, setSettings] = useState<GameSettings>(defaultGameSettings);
+
+  const onStart = (): void => {
+    setInitialized(true);
+  };
+
+  return initialized
+    ? <Memory settings={ settings } />
+    : <StartScreen onStart={ onStart } />;
 }
 
 export default App;
