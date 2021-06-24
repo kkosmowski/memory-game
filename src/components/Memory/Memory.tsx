@@ -14,7 +14,7 @@ export function Memory({ settings }: Props): ReactElement {
     <MemoryWrapper>
       <TopRow>
         <Result
-          total={ settings.cardsCount / 2 }
+          total={ settings.cardsCount }
         />
         <Timer />
       </TopRow>

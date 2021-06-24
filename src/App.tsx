@@ -8,7 +8,7 @@ const cols = 4;
 const rows = 3;
 
 const defaultGameSettings: GameSettings = {
-  cardsCount: cols * rows,
+  cardsCount: (cols * rows) / 2,
   rows,
   cols,
   difficulty: Difficulty.Relaxing,

@@ -45,28 +45,56 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
     onSettingsChange(newSettings);
   };
 
+  const onSettingsSave = (): void => {
+    console.log(settings);
+  };
+
   return (
-    <>
+    <Wrapper>
       <InstructionsText>{ instructions }</InstructionsText>
 
-      <CustomSelect
-        onChange={ onSizeChange }
-        options={ sizes }
-        value={ selectedSize }
-        label="Size"
-      />
-      <CustomSelect
-        onChange={ onDifficultyChange }
-        options={ difficulties }
-        value={ settings.difficulty }
-        label="Difficulty"
-      />
+      <Controls>
+        <CustomSelect
+          onChange={ onSizeChange }
+          options={ sizes }
+          value={ selectedSize }
+          label="Size"
+        />
+
+        <CustomSelect
+          onChange={ onDifficultyChange }
+          options={ difficulties }
+          value={ settings.difficulty }
+          label="Difficulty"
+        />
+      </Controls>
 
       <Button onClick={ onStart } variant="contained" color="primary">Begin</Button>
-    </>
+      <Button onClick={ onSettingsSave } variant="contained">Save settings</Button>
+    </Wrapper>
   );
 }
 
+const Wrapper = styled.main`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 360px;
+  padding: 0 16px;
+  margin-bottom: -8px;
+
+  > .MuiButton-root {
+    margin-bottom: 8px;
+  }
+`;
+
 const InstructionsText = styled.p`
   white-space: pre;
+`;
+
+const Controls = styled.section`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 0 16px;
 `;

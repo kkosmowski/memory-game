@@ -1,5 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { ChangeEvent, ReactElement } from 'react';
+import styled from 'styled-components';
 
 interface Props<T> {
   options: T[];
@@ -16,17 +17,23 @@ export function CustomSelect<T extends string>({ options, value, onChange, label
   const labelId = selectId + '-label';
 
   return (
-    <FormControl variant="outlined">
+    <StyledFormControl variant="outlined">
       <InputLabel id={ labelId } htmlFor={ selectId }>{ label }</InputLabel>
       <Select
         value={ value }
         onChange={ onChange }
-        id={ selectId}
+        id={ selectId }
         aria-labelledby={ labelId }
         label={ label }
       >
         { items }
       </Select>
-    </FormControl>
+    </StyledFormControl>
   );
 }
+
+const StyledFormControl = styled(FormControl)`
+  && {
+    min-width: 120px;
+  }
+`;
