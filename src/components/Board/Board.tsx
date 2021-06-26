@@ -1,33 +1,38 @@
-import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { Card } from '../Card/Card';
 import styled from 'styled-components';
 import { GameSettings } from '../../interfaces/game-settings.interface';
 import { CardInterface } from '../../interfaces/card.interface';
 
 interface Props {
+  onMatch: () => void;
   settings: GameSettings;
 }
 
 interface WrapperProps {
-  rows: number;
   cols: number;
+  rows: number;
 }
 
-export function Board({ settings }: Props): ReactElement {
+export function Board({ onMatch, settings }: Props): ReactElement {
   const characters: string[] = useMemo((): string[] => {
-    console.log('generateCharacters');
     const characters: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.slice(0, settings.cardsCount).split('');
     return [...characters, ...characters].sort(() => 0.5 - Math.random());
   }, [settings.cardsCount]);
+  const cards = setInitialCards();
+  const [flippedCards, setFlippedCards] = useState<boolean[]>(cards.map(() => false));
+  const [visibility, setVisibility] = useState<boolean[]>(cards.map(() => false));
+  const [completedCards, setCompletedCards] = useState<boolean[]>(cards.map(() => false));
+  const [cardsActive, setCardsActive] = useState<boolean>(true);
 
-  const [flippedCards, setFlippedCards] = useState<CardInterface[]>([]);
-  const [cards, setCards] = useState<CardInterface[]>(setInitialCards());
   const cardElements: ReactElement[] = characters.map((char: string, i: number) => (
     <Card
+      active={ cardsActive }
       value={ char }
+      valueVisible={ visibility[i] }
       onFlip={ onCardFlip }
-      flipped={ cards[i].flipped }
-      completed={ cards[i].completed }
+      flipped={ flippedCards[i] }
+      completed={ completedCards[i] }
       id={ i }
       key={ i }
     />
@@ -37,44 +42,57 @@ export function Board({ settings }: Props): ReactElement {
     return characters.map((char, i) => ({
       id: i,
       value: char,
-      flipped: false,
-      completed: false,
     }));
   }
 
-  const checkIfMatch = useCallback(() => {
-    if (flippedCards[0].value === flippedCards[1].value) {
-      setCards(cards.map((card) => ({
-        ...card,
-        completed: card.id === flippedCards[0].id || card.id === flippedCards[1].id,
-        flipped: false
-      })));
+  const checkIfMatch = () => {
+    console.log('checkIfMatch');
+    const [i, j]: number[] = flippedCards
+      .map((flipped, index) => ({ flipped, index }))
+      .filter((card) => card.flipped)
+      .map((card) => card.index);
+
+    if (cards[i].value === cards[j].value) {
+      setValueAtIndexes<boolean>(completedCards, setCompletedCards, true, [i, j]);
+      onMatch();
     } else {
-      setCards(cards.map((card) => ({
-        ...card,
-        flipped: false
-      })));
+      setTimeout(() => {
+        setValueAtIndexes<boolean>(visibility, setVisibility, false, [i, j]);
+      }, 250);
     }
-    setFlippedCards([]);
-  }, []);
+    setValueAtIndexes<boolean>(flippedCards, setFlippedCards, false, [i, j]);
+    setCardsActive(true);
+  };
 
   function onCardFlip(cardId: number) {
-    if (!cards[cardId].completed) {
-      setCards(cards.map((card) => card.id === cardId
-        ? { ...card, flipped: !card.flipped }
-        : card
-      ));
-      setFlippedCards([...flippedCards, cards[cardId]]);
+    if (!completedCards[cardId]) {
+      setFlippedCards(flippedCards.map((flipped, index) => index === cardId ? true : flipped));
+      setVisibility(visibility.map((visible, index) => index === cardId ? true : visible));
     }
   }
 
+  // consider making this a util
+  const setValueAtIndexes = <T, >(originalList: T[], listSetter: ((l: T[]) => void), value: T, indexes: number[]): void => {
+    const list: T[] = [...originalList];
+    for (let i of indexes) {
+      list[i] = value;
+    }
+    listSetter(list);
+  };
+
   useEffect(() => {
-    if (flippedCards.length === 2) {
+    // console.log('useEffect flippedCards');
+    if (flippedCards.filter((flipped) => flipped).length === 2) {
+      setCardsActive(false);
       setTimeout(() => {
         checkIfMatch();
       }, 500);
     }
-  }, [flippedCards, checkIfMatch]);
+  }, [flippedCards]);
+
+  useEffect(() => {
+    console.log('useEffect visibility');
+  }, [visibility]);
 
   return (
     <Wrapper rows={ settings.rows } cols={ settings.cols }>{ cardElements }</Wrapper>

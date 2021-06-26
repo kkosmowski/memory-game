@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { Board } from '../Board/Board';
 import { Timer } from '../Timer/Timer';
 import styled from 'styled-components';
@@ -10,16 +10,23 @@ interface Props {
 }
 
 export function Memory({ settings }: Props): ReactElement {
+  const [score, setScore] = useState<number>(0);
+
+  const onMatch = (): void => {
+    setScore(score + 1);
+  };
+
   return (
     <MemoryWrapper>
       <TopRow>
         <Result
+          score={ score }
           total={ settings.cardsCount }
         />
         <Timer />
       </TopRow>
 
-      <Board settings={ settings } />
+      <Board settings={ settings } onMatch={ onMatch } />
     </MemoryWrapper>
   );
 }
