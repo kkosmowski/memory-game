@@ -4,6 +4,7 @@ import { Timer } from '../Timer/Timer';
 import styled from 'styled-components';
 import { Result } from '../Result/Result';
 import { GameSettings } from '../../interfaces/game-settings.interface';
+import { Difficulty } from '../../enums/difficulty.enum';
 
 interface Props {
   settings: GameSettings;
@@ -11,6 +12,8 @@ interface Props {
 
 export function Memory({ settings }: Props): ReactElement {
   const [score, setScore] = useState<number>(0);
+  const initialTime = 5;
+  const timerVisible = settings.difficulty !== Difficulty.Relaxing;
 
   const onMatch = (): void => {
     setScore(score + 1);
@@ -23,7 +26,7 @@ export function Memory({ settings }: Props): ReactElement {
           score={ score }
           total={ settings.cardsCount }
         />
-        <Timer />
+        { timerVisible ? <Timer initialTime={ initialTime } /> : '' }
       </TopRow>
 
       <Board settings={ settings } onMatch={ onMatch } />

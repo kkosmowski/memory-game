@@ -29,7 +29,7 @@ export function Board({ onMatch, settings }: Props): ReactElement {
     <Card
       active={ cardsActive }
       value={ char }
-      valueVisible={ visibility[i] }
+      visible={ visibility[i] }
       onFlip={ onCardFlip }
       flipped={ flippedCards[i] }
       completed={ completedCards[i] }
@@ -46,7 +46,6 @@ export function Board({ onMatch, settings }: Props): ReactElement {
   }
 
   const checkIfMatch = () => {
-    console.log('checkIfMatch');
     const [i, j]: number[] = flippedCards
       .map((flipped, index) => ({ flipped, index }))
       .filter((card) => card.flipped)
@@ -81,7 +80,6 @@ export function Board({ onMatch, settings }: Props): ReactElement {
   };
 
   useEffect(() => {
-    // console.log('useEffect flippedCards');
     if (flippedCards.filter((flipped) => flipped).length === 2) {
       setCardsActive(false);
       setTimeout(() => {
@@ -89,10 +87,6 @@ export function Board({ onMatch, settings }: Props): ReactElement {
       }, 500);
     }
   }, [flippedCards]);
-
-  useEffect(() => {
-    console.log('useEffect visibility');
-  }, [visibility]);
 
   return (
     <Wrapper rows={ settings.rows } cols={ settings.cols }>{ cardElements }</Wrapper>

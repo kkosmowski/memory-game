@@ -9,11 +9,16 @@ interface Props {
   id: number;
   onFlip: (id: number) => void;
   value: string;
-  valueVisible: boolean;
+  visible: boolean;
 }
 
-export function Card({ active, completed, flipped, id, onFlip, value, valueVisible }: Props): ReactElement {
+export function Card({ active, completed, flipped, id, onFlip, value, visible }: Props): ReactElement {
+  const [showValue, setShowValue] = useState<boolean>(false);
   const [className, setClassName] = useState<string>('');
+
+  useEffect(() => {
+    setShowValue(completed || flipped || visible);
+  }, [completed, flipped, visible]);
 
   useEffect(() => {
     setClassName(completed ? '--completed' : flipped ? '--flipped' : '');
@@ -26,7 +31,7 @@ export function Card({ active, completed, flipped, id, onFlip, value, valueVisib
   return (
     <MemoryCardWrapper onClick={ onClick } className={ className } active={ active }>
       <MemoryCardReverse />
-      <MemoryCardObverse>{ valueVisible || completed ? value : '' }</MemoryCardObverse>
+      <MemoryCardObverse>{ showValue ? value : '' }</MemoryCardObverse>
     </MemoryCardWrapper>
   );
 }
