@@ -7,6 +7,6 @@ interface Props {
 
 export function Result({ score, total }: Props): ReactElement {
   return (
-    <span>Current score: { score }/{ total }</span> //@todo change to real score
+    <span>Current score: { score }/{ total }</span>
   );
 }

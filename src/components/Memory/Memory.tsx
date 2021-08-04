@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Board } from '../Board/Board';
 import { Timer } from '../Timer/Timer';
 import styled from 'styled-components';
@@ -8,25 +8,31 @@ import { Difficulty } from '../../enums/difficulty.enum';
 
 interface Props {
   settings: GameSettings;
+  onFinish: () => void;
 }
 
-export function Memory({ settings }: Props): ReactElement {
+export function Memory({ settings, onFinish }: Props): ReactElement {
   const [score, setScore] = useState<number>(0);
-  const initialTime = 5;
   const timerVisible = settings.difficulty !== Difficulty.Relaxing;
 
   const onMatch = (): void => {
     setScore(score + 1);
   };
 
+  useEffect(() => {
+    if (score === settings.pairsCount) {
+      onFinish();
+    }
+  }, [score]);
+
   return (
     <MemoryWrapper>
       <TopRow>
         <Result
           score={ score }
-          total={ settings.cardsCount }
+          total={ settings.pairsCount }
         />
-        { timerVisible ? <Timer initialTime={ initialTime } /> : '' }
+        { timerVisible ? <Timer initialTime={ settings.gameTime } /> : '' }
       </TopRow>
 
       <Board settings={ settings } onMatch={ onMatch } />

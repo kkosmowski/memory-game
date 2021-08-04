@@ -6,6 +6,7 @@ import { CustomSelect } from './CustomSelect';
 import { Difficulty } from '../../enums/difficulty.enum';
 import { BoardSize } from '../../enums/board-size.enum';
 import { getBoardSizeFromGameSettings } from '../../utils/get-board-size-from-game-settings.util';
+import { getGameTime } from '../../utils/get-game-time.util';
 
 interface Props {
   onStart: () => void;
@@ -30,7 +31,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
     const [rows, _, cols] = size.split('');
     const newSettings: GameSettings = {
       ...settings,
-      cardsCount: +rows * +cols,
+      pairsCount: +rows * +cols,
       rows: +rows,
       cols: +cols,
     };
@@ -38,11 +39,15 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
   };
 
   const onDifficultyChange = (event: ChangeEvent<{ value: unknown }>) => {
+    const newDifficulty = event.target.value as Difficulty;
     const newSettings: GameSettings = {
       ...settings,
-      difficulty: event.target.value as Difficulty,
-    };
-    onSettingsChange(newSettings);
+      difficulty: newDifficulty
+    }
+    onSettingsChange({
+      ...newSettings,
+      gameTime: getGameTime(newSettings)
+    });
   };
 
   const onSettingsSave = (): void => {

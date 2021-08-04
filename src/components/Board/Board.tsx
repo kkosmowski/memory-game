@@ -16,9 +16,9 @@ interface WrapperProps {
 
 export function Board({ onMatch, settings }: Props): ReactElement {
   const characters: string[] = useMemo((): string[] => {
-    const characters: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.slice(0, settings.cardsCount).split('');
+    const characters: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.slice(0, settings.pairsCount).split('');
     return [...characters, ...characters].sort(() => 0.5 - Math.random());
-  }, [settings.cardsCount]);
+  }, [settings.pairsCount]);
   const cards = setInitialCards();
   const [flippedCards, setFlippedCards] = useState<boolean[]>(cards.map(() => false));
   const [visibility, setVisibility] = useState<boolean[]>(cards.map(() => false));
