@@ -1,9 +1,9 @@
 export enum BoardSize {
-  XS = '2×3',
-  S = '3×4',
-  M = '4×5',
-  L = '5×6',
-  XL = '6×7',
-  H = '7×8',
-  G = '8×9'
+  ExtraSmall = '2×3',
+  Small = '3×4',
+  Medium = '4×5',
+  Large = '5×6',
+  ExtraLarge = '6×7',
+  Huge = '7×8',
+  Gigantic = '8×9'
 }
