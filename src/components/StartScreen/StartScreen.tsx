@@ -7,6 +7,7 @@ import { Difficulty } from '../../enums/difficulty.enum';
 import { BoardSize } from '../../enums/board-size.enum';
 import { getBoardSizeFromGameSettings } from '../../utils/get-board-size-from-game-settings.util';
 import { getGameTime } from '../../utils/get-game-time.util';
+import { getPairsCount } from '../../utils/get-pairs-count.util';
 
 interface Props {
   onStart: () => void;
@@ -31,7 +32,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
     const [rows, _, cols] = size.split('');
     const newSettings: GameSettings = {
       ...settings,
-      pairsCount: +rows * +cols,
+      pairsCount: getPairsCount({ rows: +rows, cols: +cols }),
       rows: +rows,
       cols: +cols,
     };
@@ -43,7 +44,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
     const newSettings: GameSettings = {
       ...settings,
       difficulty: newDifficulty
-    }
+    };
     onSettingsChange({
       ...newSettings,
       gameTime: getGameTime(newSettings)

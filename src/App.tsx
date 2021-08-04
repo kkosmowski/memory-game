@@ -4,12 +4,13 @@ import { StartScreen } from './components/StartScreen/StartScreen';
 import { GameSettings } from './interfaces/game-settings.interface';
 import { Difficulty } from './enums/difficulty.enum';
 import { EndScreen } from './components/EndScreen/EndScreen';
+import { getPairsCount } from './utils/get-pairs-count.util';
 
 const cols = 4;
 const rows = 3;
 
 const defaultGameSettings: GameSettings = {
-  pairsCount: (cols * rows) / 2,
+  pairsCount: getPairsCount({ rows, cols }),
   rows,
   cols,
   difficulty: Difficulty.Relaxing,
