@@ -23,6 +23,7 @@ function App() {
   const [settings, setSettings] = useState<GameSettings>(defaultGameSettings);
   const [startingTime, setStartingTime] = useState<Date>();
   const [elapsedTime, setElapsedTime] = useState<string>('');
+  const [userWon, setUserWon] = useState<boolean>(false);
 
   const onStart = (): void => {
     setInitialized(true);
@@ -36,21 +37,30 @@ function App() {
 
   const onFinish = (): void => {
     setFinished(true);
-    setElapsedTime((((new Date()).getTime() - startingTime!.getTime()) / 1000).toFixed(2) + 's');
+    const timeInSeconds: number = ((new Date()).getTime() - startingTime!.getTime()) / 1000;
+    setElapsedTime((timeInSeconds).toFixed(2) + 's');
+    setUserWon(timeInSeconds < settings.gameTime);
   };
 
   const onSettingsChange = (newSettings: GameSettings): void => {
     setSettings(newSettings);
   };
 
+  const onTimerEnd = (): void => {
+    setFinished(true);
+    setUserWon(false);
+    setElapsedTime(settings.gameTime + 's');
+  };
+
   return initialized
     ? finished
       ? <EndScreen
+        win={ userWon }
         onRestart={ onRestart }
         difficulty={ settings.difficulty }
         elapsed={ elapsedTime }
       />
-      : <Memory onFinish={ onFinish } settings={ settings } />
+      : <Memory onFinish={ onFinish } onTimerEnd={ onTimerEnd } settings={ settings } />
     : <StartScreen
       onStart={ onStart }
       onSettingsChange={ onSettingsChange }

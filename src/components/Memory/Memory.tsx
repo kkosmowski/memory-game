@@ -9,21 +9,26 @@ import { Difficulty } from '../../enums/difficulty.enum';
 interface Props {
   settings: GameSettings;
   onFinish: () => void;
+  onTimerEnd: () => void;
 }
 
-export function Memory({ settings, onFinish }: Props): ReactElement {
+export function Memory({ settings, onFinish, onTimerEnd }: Props): ReactElement {
   const [score, setScore] = useState<number>(0);
   const timerVisible = settings.difficulty !== Difficulty.Relaxing;
-
-  const onMatch = (): void => {
-    setScore(score + 1);
-  };
 
   useEffect(() => {
     if (score === settings.pairsCount) {
       onFinish();
     }
   }, [score]);
+
+  const onMatch = (): void => {
+    setScore(score + 1);
+  };
+
+  const timerEnded = (): void => {
+    onTimerEnd();
+  };
 
   return (
     <MemoryWrapper>
@@ -32,7 +37,7 @@ export function Memory({ settings, onFinish }: Props): ReactElement {
           score={ score }
           total={ settings.pairsCount }
         />
-        { timerVisible ? <Timer initialTime={ settings.gameTime } /> : '' }
+        { timerVisible ? <Timer onTimerEnd={ timerEnded } initialTime={ settings.gameTime } /> : '' }
       </TopRow>
 
       <Board settings={ settings } onMatch={ onMatch } />
