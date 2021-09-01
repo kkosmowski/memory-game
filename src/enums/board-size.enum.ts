@@ -5,5 +5,5 @@ export enum BoardSize {
   Large = '5×6',
   ExtraLarge = '6×7',
   Huge = '7×8',
-  Gigantic = '8×9'
+  Gigantic = '7×10'
 }

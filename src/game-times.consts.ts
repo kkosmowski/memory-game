@@ -39,7 +39,7 @@ export const gameTimes = {
     [Difficulty.Hard]: 8, // v0
   },
   [BoardSize.Gigantic]: { // @todo
-    [Difficulty.Easy]: 15, // v0
+    [Difficulty.Easy]: 9999, // v0
     [Difficulty.Medium]: 10, // v0
     [Difficulty.Hard]: 8, // v0
   },

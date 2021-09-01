@@ -10,6 +10,7 @@ import { getGameTime } from '../../utils/get-game-time.util';
 import { getPairsCount } from '../../utils/get-pairs-count.util';
 import { StorageUtil } from '../../utils/storage.util';
 import { STORAGE_SETTINGS_KEY } from '../../consts/storage.consts';
+import { boardSizeChar } from '../../consts/board-size.consts';
 
 interface Props {
   onStart: () => void;
@@ -32,7 +33,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
   const onSizeChange = (event: ChangeEvent<{ value: unknown }>) => {
     const size = event.target.value as BoardSize;
     setSelectedSize(size);
-    const [rows, _, cols] = size.split('');
+    const [rows, cols] = size.split(boardSizeChar);
     const newSettings: GameSettings = {
       ...settings,
       pairsCount: getPairsCount({ rows: +rows, cols: +cols }),

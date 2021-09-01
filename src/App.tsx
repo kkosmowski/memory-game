@@ -61,7 +61,6 @@ function App() {
   };
 
   const checkStorageForGameSettings = (): void => {
-    console.log('checkStorageForGameSettings');
     const savedSettings: GameSettings | null = StorageUtil.get(STORAGE_SETTINGS_KEY);
     if (savedSettings) {
       setSettings(savedSettings);

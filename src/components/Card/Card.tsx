@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Card as MaterialCard } from '@material-ui/core';
 import styled from 'styled-components';
+import { media } from '../../consts/media-query.consts';
 
 interface Props {
   active: boolean;
@@ -38,8 +39,8 @@ export function Card({ active, completed, flipped, id, onFlip, value, visible }:
 
 const MemoryCardWrapper = styled.div<{ active: boolean }>`
   ${ p => p.active ? '' : 'pointer-events: none;' }
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   position: relative;
   transition: transform 1s;
   will-change: transform;
@@ -47,6 +48,8 @@ const MemoryCardWrapper = styled.div<{ active: boolean }>`
   cursor: pointer;
 
   && > * {
+    width: 100%;
+    height: 100%;
     transition: opacity 0.5s 0.75s;
     will-change: opacity;
   }
@@ -72,8 +75,15 @@ const MemoryCardReverse = styled(MaterialCard)`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 48px;
   font-family: 'Shippori Mincho', 'Times New Roman', serif;
+  font-size: 28px;
+
+  @media ${ media.tablet } {
+    font-size: 48px;
+  }
+  @media ${ media.desktop.m } {
+    font-size: 56px;
+  }
 `;
 
 const MemoryCardObverse = styled(MemoryCardReverse)`

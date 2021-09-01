@@ -50,7 +50,7 @@ const MemoryWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 448px; //@todo change to "columns * cardWidth + (columns - 1) * gapWidth"
+  height: 100%;
 `;
 
 const TopRow = styled.div`
@@ -58,5 +58,6 @@ const TopRow = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 32px;
+  max-width: 448px; //@todo change to "columns * cardWidth + (columns - 1) * gapWidth"
+  margin-bottom: var(--margin);
 `;

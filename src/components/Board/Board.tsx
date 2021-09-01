@@ -3,6 +3,7 @@ import { Card } from '../Card/Card';
 import styled from 'styled-components';
 import { GameSettings } from '../../interfaces/game-settings.interface';
 import { CardInterface } from '../../interfaces/card.interface';
+import { media } from '../../consts/media-query.consts';
 
 interface Props {
   onMatch: () => void;
@@ -94,8 +95,12 @@ export function Board({ onMatch, settings }: Props): ReactElement {
 }
 
 const Wrapper = styled.div<WrapperProps>`
-  display: inline-grid;
-  ${ p => `grid-template: repeat(${ p.rows }, 1fr) / repeat(${ p.cols }, 1fr);` }
-  grid-gap: 16px;
-  perspective: 600px;
+  display: grid;
+  width: 100%;
+  flex: 1;
+  grid-gap: var(--margin);
+  padding: 0 var(--margin) var(--margin);
+  ${ p => `grid-template: repeat(${ p.cols }, 1fr) / repeat(${ p.rows }, 1fr);` } @media ${ media.desktop.s } {
+    ${ p => `grid-template: repeat(${ p.rows }, 1fr) / repeat(${ p.cols }, 1fr);` }
+  }
 `;

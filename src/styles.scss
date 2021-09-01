@@ -9,6 +9,19 @@ html {
   font-family: Roboto, serif;
   --win-color: #18ac18;
   --loss-color: #b34a38;
+  --margin: 4px;
+
+  @media (min-width: 600px) {
+    --margin: 8px;
+  }
+
+  @media (min-width: 1024px) {
+    --margin: 12px;
+  }
+
+  @media (min-width: 1320px) {
+    --margin: 16px;
+  }
 }
 
 *,
