@@ -8,6 +8,8 @@ import { BoardSize } from '../../enums/board-size.enum';
 import { getBoardSizeFromGameSettings } from '../../utils/get-board-size-from-game-settings.util';
 import { getGameTime } from '../../utils/get-game-time.util';
 import { getPairsCount } from '../../utils/get-pairs-count.util';
+import { StorageUtil } from '../../utils/storage.util';
+import { STORAGE_SETTINGS_KEY } from '../../consts/storage.consts';
 
 interface Props {
   onStart: () => void;
@@ -24,6 +26,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
 
   useEffect(() => {
     setSettings(gameSettings);
+    setSelectedSize(getBoardSizeFromGameSettings(gameSettings));
   }, [gameSettings]);
 
   const onSizeChange = (event: ChangeEvent<{ value: unknown }>) => {
@@ -52,7 +55,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
   };
 
   const onSettingsSave = (): void => {
-    console.log(settings);
+    StorageUtil.set(STORAGE_SETTINGS_KEY, settings);
   };
 
   return (

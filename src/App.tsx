@@ -1,10 +1,12 @@
 import { Memory } from './components/Memory/Memory';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StartScreen } from './components/StartScreen/StartScreen';
 import { GameSettings } from './interfaces/game-settings.interface';
 import { Difficulty } from './enums/difficulty.enum';
 import { EndScreen } from './components/EndScreen/EndScreen';
 import { getPairsCount } from './utils/get-pairs-count.util';
+import { StorageUtil } from './utils/storage.util';
+import { STORAGE_SETTINGS_KEY } from './consts/storage.consts';
 
 const cols = 4;
 const rows = 3;
@@ -23,7 +25,11 @@ function App() {
   const [settings, setSettings] = useState<GameSettings>(defaultGameSettings);
   const [startingTime, setStartingTime] = useState<Date>();
   const [elapsedTime, setElapsedTime] = useState<string>('');
-  const [userWon, setUserWon] = useState<boolean>(false);
+  const [userWon, setUserWon] = useState<boolean>(true);
+
+  useEffect(() => {
+    checkStorageForGameSettings();
+  }, []);
 
   const onStart = (): void => {
     setInitialized(true);
@@ -39,7 +45,9 @@ function App() {
     setFinished(true);
     const timeInSeconds: number = ((new Date()).getTime() - startingTime!.getTime()) / 1000;
     setElapsedTime((timeInSeconds).toFixed(2) + 's');
-    setUserWon(timeInSeconds < settings.gameTime);
+    if (settings.difficulty !== Difficulty.Relaxing) {
+      setUserWon(timeInSeconds < settings.gameTime);
+    }
   };
 
   const onSettingsChange = (newSettings: GameSettings): void => {
@@ -50,6 +58,14 @@ function App() {
     setFinished(true);
     setUserWon(false);
     setElapsedTime(settings.gameTime + 's');
+  };
+
+  const checkStorageForGameSettings = (): void => {
+    console.log('checkStorageForGameSettings');
+    const savedSettings: GameSettings | null = StorageUtil.get(STORAGE_SETTINGS_KEY);
+    if (savedSettings) {
+      setSettings(savedSettings);
+    }
   };
 
   return initialized
