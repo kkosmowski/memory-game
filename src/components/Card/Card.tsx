@@ -41,6 +41,8 @@ const MemoryCardWrapper = styled.div<{ active: boolean }>`
   ${ p => p.active ? '' : 'pointer-events: none;' }
   width: 100%;
   height: 100%;
+  max-width: 100px;
+  max-height: 100px;
   position: relative;
   transition: transform 1s;
   will-change: transform;
@@ -69,8 +71,8 @@ const MemoryCardWrapper = styled.div<{ active: boolean }>`
 `;
 
 const MemoryCardReverse = styled(MaterialCard)`
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -78,7 +80,7 @@ const MemoryCardReverse = styled(MaterialCard)`
   font-family: 'Shippori Mincho', 'Times New Roman', serif;
   font-size: 28px;
 
-  @media ${ media.tablet } {
+  @media ${ media.tablet.l } {
     font-size: 48px;
   }
   @media ${ media.desktop.m } {

@@ -58,6 +58,6 @@ const TopRow = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 448px; //@todo change to "columns * cardWidth + (columns - 1) * gapWidth"
-  margin-bottom: var(--margin);
+  max-width: 448px;
+  padding: 0 var(--margin);
 `;

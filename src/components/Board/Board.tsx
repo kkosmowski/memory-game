@@ -96,11 +96,13 @@ export function Board({ onMatch, settings }: Props): ReactElement {
 
 const Wrapper = styled.div<WrapperProps>`
   display: grid;
-  width: 100%;
-  flex: 1;
   grid-gap: var(--margin);
-  padding: 0 var(--margin) var(--margin);
-  ${ p => `grid-template: repeat(${ p.cols }, 1fr) / repeat(${ p.rows }, 1fr);` } @media ${ media.desktop.s } {
+  padding: var(--margin);
+  width: min(100%, calc(${ p => p.rows + ' * var(--regular-card-size) + ' + (p.rows + 1) + ' * var(--margin)' }));
+  height: min(100%, calc(${ p => p.cols + ' * var(--regular-card-size) + ' + (p.cols + 1) + ' * var(--margin)' }));
+  ${ p => `grid-template: repeat(${ p.cols }, 1fr) / repeat(${ p.rows }, 1fr);` } @media ${ media.tablet.m } {
+    width: min(100%, calc(${ p => p.cols + ' * var(--regular-card-size) + ' + (p.cols + 1) + ' * var(--margin)' }));
+    height: min(100%, calc(${ p => p.rows + ' * var(--regular-card-size) + ' + (p.rows + 1) + ' * var(--margin)' }));
     ${ p => `grid-template: repeat(${ p.rows }, 1fr) / repeat(${ p.cols }, 1fr);` }
   }
 `;

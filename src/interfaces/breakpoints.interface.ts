@@ -6,7 +6,7 @@ interface MediaBreakpoints {
 
 export interface Breakpoints {
   mobile: MediaBreakpoints;
-  tablet: number;
+  tablet: MediaBreakpoints;
   desktop: MediaBreakpoints;
 }
 
@@ -18,6 +18,6 @@ interface MediaItem {
 
 export interface Media {
   mobile: MediaItem;
-  tablet: string;
+  tablet: MediaItem;
   desktop: MediaItem;
 }
