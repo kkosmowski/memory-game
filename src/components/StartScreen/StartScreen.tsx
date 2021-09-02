@@ -49,10 +49,7 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings }: Props):
       ...settings,
       difficulty: newDifficulty
     };
-    onSettingsChange({
-      ...newSettings,
-      gameTime: getGameTime(newSettings)
-    });
+    onSettingsChange(newSettings);
   };
 
   const onSettingsSave = (): void => {

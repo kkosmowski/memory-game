@@ -8,6 +8,7 @@ import { getPairsCount } from './utils/get-pairs-count.util';
 import { StorageUtil } from './utils/storage.util';
 import { STORAGE_SETTINGS_KEY } from './consts/storage.consts';
 import { EndData } from './interfaces/end-data.interface';
+import { getGameTime } from './utils/get-game-time.util';
 
 const cols = 4;
 const rows = 3;
@@ -64,7 +65,10 @@ function App() {
   };
 
   const onSettingsChange = (newSettings: GameSettings): void => {
-    setSettings(newSettings);
+    setSettings({
+      ...newSettings,
+      gameTime: getGameTime(newSettings)
+    });
   };
 
   const onTimerEnd = (score: number): void => {
