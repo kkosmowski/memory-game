@@ -9,19 +9,19 @@ import { Difficulty } from './enums/difficulty.enum';
 
 export const gameTimes = {
   [BoardSize.ExtraSmall]: {
-    [Difficulty.Easy]: 12,
+    [Difficulty.Easy]: 11,
     [Difficulty.Medium]: 9,
-    [Difficulty.Hard]: 7.2,
+    [Difficulty.Hard]: 7.3,
   },
   [BoardSize.Small]: {
-    [Difficulty.Easy]: 24, // v3
-    [Difficulty.Medium]: 20, // v3
-    [Difficulty.Hard]: 17, // v3
+    [Difficulty.Easy]: 23, // v4
+    [Difficulty.Medium]: 19.4, // v4
+    [Difficulty.Hard]: 16.8, // v4
   },
   [BoardSize.Medium]: {
-    [Difficulty.Easy]: 50, // v3
-    [Difficulty.Medium]: 41, // v3
-    [Difficulty.Hard]: 35, // v2
+    [Difficulty.Easy]: 51.7, // v4
+    [Difficulty.Medium]: 44.5, // v4
+    [Difficulty.Hard]: 35, // v34
   },
   [BoardSize.Large]: {
     [Difficulty.Easy]: 84, // v2
@@ -39,7 +39,7 @@ export const gameTimes = {
     [Difficulty.Hard]: 8, // v0
   },
   [BoardSize.Gigantic]: { // @todo
-    [Difficulty.Easy]: 9999, // v0
+    [Difficulty.Easy]: 300, // v0
     [Difficulty.Medium]: 10, // v0
     [Difficulty.Hard]: 8, // v0
   },

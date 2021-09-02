@@ -9,11 +9,12 @@ import { Difficulty } from '../../enums/difficulty.enum';
 interface Props {
   settings: GameSettings;
   onFinish: () => void;
-  onTimerEnd: () => void;
+  onTimerEnd: (score: number) => void;
 }
 
 export function Memory({ settings, onFinish, onTimerEnd }: Props): ReactElement {
   const [score, setScore] = useState<number>(0);
+  const [timerEnd, setTimerEnd] = useState<boolean>(false);
   const timerVisible = settings.difficulty !== Difficulty.Relaxing;
 
   useEffect(() => {
@@ -22,12 +23,18 @@ export function Memory({ settings, onFinish, onTimerEnd }: Props): ReactElement 
     }
   }, [score]);
 
+  useEffect(() => {
+    if (timerEnd) {
+      onTimerEnd(score);
+    }
+  }, [timerEnd]);
+
   const onMatch = (): void => {
     setScore(score + 1);
   };
 
   const timerEnded = (): void => {
-    onTimerEnd();
+    setTimerEnd(true);
   };
 
   return (

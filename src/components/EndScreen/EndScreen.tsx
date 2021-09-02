@@ -1,25 +1,25 @@
 import { ReactElement } from 'react';
-import { Difficulty } from '../../enums/difficulty.enum';
 import { Button } from '@material-ui/core';
 import styled from 'styled-components';
+import { EndData } from '../../interfaces/end-data.interface';
 
 interface Props {
-  win: boolean;
-  difficulty: Difficulty;
-  elapsed: string;
+  data: EndData;
   onRestart: () => void;
 }
 
-export function EndScreen({ win, difficulty, elapsed, onRestart }: Props): ReactElement {
-  const title = win ? <>You've won!</> : <>You've lost :(</>;
-  const winMessage = <>It took you <ElapsedTime win={ true }>{ elapsed }</ElapsedTime> to finish the game.</>;
-  const lossMessage = <>You didn't manage to finish the game in <ElapsedTime
-    win={ false }>{ elapsed }</ElapsedTime>.</>;
+export function EndScreen({ data, onRestart }: Props): ReactElement {
+  const title = <ResultText win={ data.won }>{ data.won ? 'You\'ve won!' : 'You\'ve lost :(' }</ResultText>;
+  const score = data.won ? null : <p>Your score: { data!.points.score }/{ data!.points.total }</p>;
+  const winMessage = <>It took you <ResultText win={ true }>{ data.elapsed }</ResultText> to finish the game.</>;
+  const lossMessage = <>You didn't manage to finish the game in <ResultText
+    win={ false }>{ data.elapsed }</ResultText>.</>;
   return (
     <>
       <EndTextContainer>
         <p>{ title }</p>
-        <p>{ win ? winMessage : lossMessage }</p>
+        { score }
+        <p>{ data.won ? winMessage : lossMessage }</p>
 
       </EndTextContainer>
 
@@ -34,6 +34,6 @@ const EndTextContainer = styled.main`
   margin-bottom: 32px;
 `;
 
-const ElapsedTime = styled.strong<{ win: boolean }>`
+const ResultText = styled.strong<{ win: boolean }>`
   ${ p => `color: var(--${ p.win ? 'win' : 'loss' }-color);` }
 `;
