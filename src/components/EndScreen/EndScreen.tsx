@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function EndScreen({ data, onRestart }: Props): ReactElement {
-  const title = <ResultText win={ data.won }>{ data.won ? 'You\'ve won!' : 'You\'ve lost :(' }</ResultText>;
+  const title = <ResultHeader win={ data.won }>{ data.won ? 'You\'ve won!' : 'You\'ve lost :(' }</ResultHeader>;
   const score = data.won ? null : <p>Your score: { data!.points.score }/{ data!.points.total }</p>;
   const winMessage = <>It took you <ResultText win={ true }>{ data.elapsed }</ResultText> to finish the game.</>;
   const lossMessage = <>You didn't manage to finish the game in <ResultText
@@ -34,6 +34,10 @@ const EndTextContainer = styled.main`
   margin-bottom: 32px;
 `;
 
+const ResultHeader = styled.h1<{ win: boolean }>`
+  ${ p => `color: var(--${ p.win ? 'win' : 'loss' }-color);` }
+  margin-bottom: 0;
+`;
 const ResultText = styled.strong<{ win: boolean }>`
   ${ p => `color: var(--${ p.win ? 'win' : 'loss' }-color);` }
 `;
