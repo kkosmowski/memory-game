@@ -20,7 +20,7 @@ export function EndScreen({ data, onRestart }: Props): ReactElement {
   const difficultyText = <strong>{ data.difficulty }</strong>;
   const maxTimeText = <ResultText win={ false }>{ data.elapsed }s</ResultText>;
   const winMessage = <>It took you { resultText } to finish the { difficultyText } game.</>;
-  const lossMessage = <>You didn't manage to finish the game in { maxTimeText }s.</>;
+  const lossMessage = <>You didn't manage to finish the game in { maxTimeText }.</>;
   return (
     <>
       <EndTextContainer>

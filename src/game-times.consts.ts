@@ -27,16 +27,16 @@ export const gameTimes = {
     [Difficulty.Impossible]: 28.7, // v3
   },
   [BoardSize.Large]: {
-    [Difficulty.Easy]: 85, // v3
+    [Difficulty.Easy]: 89, // v4
     [Difficulty.Medium]: 73.6, // v3
     [Difficulty.Hard]: 63, // v2
     [Difficulty.Impossible]: 59, // v1
   },
   [BoardSize.ExtraLarge]: {
-    [Difficulty.Easy]: 140, // v2
-    [Difficulty.Medium]: 118, // v2
-    [Difficulty.Hard]: 105.9, // v2
-    [Difficulty.Impossible]: 94, // v2
+    [Difficulty.Easy]: 142, // v3
+    [Difficulty.Medium]: 117.6, // v3
+    [Difficulty.Hard]: 105, // v3
+    [Difficulty.Impossible]: 92, // v3
   },
   [BoardSize.Huge]: {
     [Difficulty.Easy]: 198, // v1
