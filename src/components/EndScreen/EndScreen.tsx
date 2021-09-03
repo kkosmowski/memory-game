@@ -17,7 +17,7 @@ export function EndScreen({ data, onRestart }: Props): ReactElement {
   return (
     <>
       <EndTextContainer>
-        <p>{ title }</p>
+        { title }
         { score }
         <p>{ data.won ? winMessage : lossMessage }</p>
 

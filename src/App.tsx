@@ -6,9 +6,13 @@ import { Difficulty } from './enums/difficulty.enum';
 import { EndScreen } from './components/EndScreen/EndScreen';
 import { getPairsCount } from './utils/get-pairs-count.util';
 import { StorageUtil } from './utils/storage.util';
-import { STORAGE_SETTINGS_KEY } from './consts/storage.consts';
+import { STORAGE_HIGH_SCORES_KEY, STORAGE_SETTINGS_KEY } from './consts/storage.consts';
 import { EndData } from './interfaces/end-data.interface';
 import { getGameTime } from './utils/get-game-time.util';
+import { HighScores, HighScoresLists } from './interfaces/high-scores.interfaces';
+import { getBoardSizeFromGameSettings } from './utils/get-board-size-from-game-settings.util';
+import { NUMBER_OF_SCORES } from './consts/high-scores.consts';
+import { BoardSize } from './enums/board-size.enum';
 
 const cols = 4;
 const rows = 3;
@@ -27,9 +31,11 @@ function App() {
   const [settings, setSettings] = useState<GameSettings>(defaultGameSettings);
   const [startingTime, setStartingTime] = useState<Date>();
   const [endData, setEndData] = useState<EndData | null>(null);
+  const [storedHighScores, setStoredHighScores] = useState<HighScores | null>(null);
 
   useEffect(() => {
     checkStorageForGameSettings();
+    checkStorageForHighScores();
   }, []);
 
   useEffect(() => {
@@ -62,6 +68,7 @@ function App() {
       },
       difficulty: settings.difficulty,
     });
+    saveHighScores(true, +timeInSeconds.toFixed(2));
   };
 
   const onSettingsChange = (newSettings: GameSettings): void => {
@@ -81,13 +88,64 @@ function App() {
       },
       difficulty: settings.difficulty,
     });
+    saveHighScores(false, settings.gameTime);
   };
 
   const checkStorageForGameSettings = (): void => {
-    const savedSettings: GameSettings | null = StorageUtil.get(STORAGE_SETTINGS_KEY);
+    const savedSettings: GameSettings | null = StorageUtil.get<GameSettings>(STORAGE_SETTINGS_KEY);
     if (savedSettings) {
       setSettings(savedSettings);
     }
+  };
+
+  const checkStorageForHighScores = (): void => {
+    const highScores: HighScores | null = StorageUtil.get<HighScores>(STORAGE_HIGH_SCORES_KEY);
+    setStoredHighScores(highScores);
+  };
+
+  const saveHighScores = (won: boolean, time: number): void => {
+    const currentBoardSize: BoardSize = getBoardSizeFromGameSettings(settings);
+    let currentHighScores: HighScoresLists = {
+      top: [],
+      last: []
+    };
+    if (storedHighScores && storedHighScores[currentBoardSize]) {
+      currentHighScores = storedHighScores[currentBoardSize];
+    }
+
+    if (won) {
+      updateTopHighScores(currentHighScores.top, time);
+    }
+    updateLastHighScores(currentHighScores.last, time);
+    setNewHighScores(currentBoardSize, currentHighScores);
+  };
+
+  const updateTopHighScores = (scores: number[], time: number): void => {
+    if (scores.length < NUMBER_OF_SCORES || !scores[scores.length - 1] || scores[scores.length - 1] > time) {
+      scores.push(time);
+      scores.sort((timeA, timeB) => timeA - timeB);
+      trimScoresIfNecessary(scores);
+    }
+  };
+
+  const updateLastHighScores = (scores: number[], time: number): void => {
+    scores.unshift(time);
+    trimScoresIfNecessary(scores);
+  };
+
+  const trimScoresIfNecessary = (scores: number[]): void => {
+    if (scores.length > NUMBER_OF_SCORES) {
+      scores.length = NUMBER_OF_SCORES;
+    }
+  };
+
+  const setNewHighScores = (boardSize: BoardSize, highScoresLists: HighScoresLists): void => {
+    const newHighScores: HighScores = {
+      ...storedHighScores!,
+      [boardSize]: highScoresLists
+    };
+    setStoredHighScores(newHighScores);
+    StorageUtil.set<HighScores>(STORAGE_HIGH_SCORES_KEY, newHighScores);
   };
 
   return initialized
@@ -101,6 +159,7 @@ function App() {
       onStart={ onStart }
       onSettingsChange={ onSettingsChange }
       gameSettings={ settings }
+      highScores={ storedHighScores }
     />;
 }
 
