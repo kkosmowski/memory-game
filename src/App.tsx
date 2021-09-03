@@ -32,6 +32,7 @@ function App() {
   const [startingTime, setStartingTime] = useState<Date>();
   const [endData, setEndData] = useState<EndData | null>(null);
   const [storedHighScores, setStoredHighScores] = useState<HighScores | null>(null);
+  const [currentBoardSize, setCurrentBoardSize] = useState<BoardSize>(getBoardSizeFromGameSettings(defaultGameSettings));
 
   useEffect(() => {
     checkStorageForGameSettings();
@@ -43,6 +44,14 @@ function App() {
       setFinished(true);
     }
   }, [endData]);
+
+  const updateSettings = (newSettings: GameSettings): void => {
+    setSettings({
+      ...newSettings,
+      gameTime: getGameTime(newSettings)
+    });
+    setCurrentBoardSize(getBoardSizeFromGameSettings(newSettings));
+  };
 
   const onStart = (): void => {
     setInitialized(true);
@@ -61,32 +70,27 @@ function App() {
       won: settings.difficulty !== Difficulty.Relaxing
         ? timeInSeconds < settings.gameTime
         : true,
-      elapsed: (timeInSeconds).toFixed(2) + 's',
+      elapsed: +(timeInSeconds).toFixed(2),
       points: {
         score: settings.pairsCount,
         total: settings.pairsCount
       },
       difficulty: settings.difficulty,
+      boardSize: currentBoardSize
     });
     saveHighScores(true, +timeInSeconds.toFixed(2));
-  };
-
-  const onSettingsChange = (newSettings: GameSettings): void => {
-    setSettings({
-      ...newSettings,
-      gameTime: getGameTime(newSettings)
-    });
   };
 
   const onTimerEnd = (score: number): void => {
     setEndData({
       won: false,
-      elapsed: settings.gameTime + 's',
+      elapsed: settings.gameTime,
       points: {
         score,
         total: settings.pairsCount
       },
       difficulty: settings.difficulty,
+      boardSize: currentBoardSize
     });
     saveHighScores(false, settings.gameTime);
   };
@@ -94,7 +98,7 @@ function App() {
   const checkStorageForGameSettings = (): void => {
     const savedSettings: GameSettings | null = StorageUtil.get<GameSettings>(STORAGE_SETTINGS_KEY);
     if (savedSettings) {
-      setSettings(savedSettings);
+      updateSettings(savedSettings);
     }
   };
 
@@ -104,7 +108,6 @@ function App() {
   };
 
   const saveHighScores = (won: boolean, time: number): void => {
-    const currentBoardSize: BoardSize = getBoardSizeFromGameSettings(settings);
     let currentHighScores: HighScoresLists = {
       top: [],
       last: []
@@ -157,7 +160,7 @@ function App() {
       : <Memory onFinish={ onFinish } onTimerEnd={ onTimerEnd } settings={ settings } />
     : <StartScreen
       onStart={ onStart }
-      onSettingsChange={ onSettingsChange }
+      onSettingsChange={ updateSettings }
       gameSettings={ settings }
       highScores={ storedHighScores }
     />;

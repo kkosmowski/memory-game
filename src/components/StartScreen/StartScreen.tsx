@@ -64,14 +64,14 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings, highScore
       <InstructionsText>{ instructions }</InstructionsText>
 
       <Controls>
-        <CustomSelect
+        <CustomSelect<string>
           onChange={ onSizeChange }
           options={ sizes }
           value={ selectedSize }
           label="Size"
         />
 
-        <CustomSelect
+        <CustomSelect<string>
           onChange={ onDifficultyChange }
           options={ difficulties }
           value={ settings.difficulty }
@@ -87,11 +87,13 @@ export function StartScreen({ onStart, onSettingsChange, gameSettings, highScore
           highScores={ highScores }
           variant={ HighScoresListVariant.Last }
           boardSize={ selectedSize }
+          withColors={ false }
         />
         <HighScoresList
           highScores={ highScores }
           variant={ HighScoresListVariant.Top }
           boardSize={ selectedSize }
+          withColors={ true }
         />
       </HighScoresWrapper>
     </Wrapper>

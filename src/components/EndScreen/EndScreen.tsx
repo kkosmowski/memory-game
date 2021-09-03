@@ -2,6 +2,8 @@ import { ReactElement } from 'react';
 import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 import { EndData } from '../../interfaces/end-data.interface';
+import { ScoreUtil } from '../../utils/score.util';
+import { Difficulty } from '../../enums/difficulty.enum';
 
 interface Props {
   data: EndData;
@@ -9,17 +11,21 @@ interface Props {
 }
 
 export function EndScreen({ data, onRestart }: Props): ReactElement {
-  const title = <ResultHeader win={ data.won }>{ data.won ? 'You\'ve won!' : 'You\'ve lost :(' }</ResultHeader>;
-  const score = data.won ? null : <p>Your score: { data!.points.score }/{ data!.points.total }</p>;
-  const winMessage = <>It took you <ResultText win={ true }>{ data.elapsed }</ResultText> to finish
-    the <strong>{ data.difficulty }</strong> game.</>;
-  const lossMessage = <>You didn't manage to finish the game in <ResultText
-    win={ false }>{ data.elapsed }</ResultText>.</>;
+  const resultText: ReactElement = (
+    <ResultText
+      win={ true }
+      difficultyReached={ ScoreUtil.getReachedDifficultyForTime(data.elapsed, data.boardSize) }
+    >{ data.elapsed }s</ResultText>
+  );
+  const difficultyText = <strong>{ data.difficulty }</strong>;
+  const maxTimeText = <ResultText win={ false }>{ data.elapsed }s</ResultText>;
+  const winMessage = <>It took you { resultText } to finish the { difficultyText } game.</>;
+  const lossMessage = <>You didn't manage to finish the game in { maxTimeText }s.</>;
   return (
     <>
       <EndTextContainer>
-        { title }
-        { score }
+        <ResultHeader win={ data.won }>{ data.won ? 'You\'ve won!' : 'You\'ve lost :(' }</ResultHeader>
+        { data.won ? null : <p>Your score: { data!.points.score }/{ data!.points.total }</p> }
         <p>{ data.won ? winMessage : lossMessage }</p>
 
       </EndTextContainer>
@@ -39,6 +45,6 @@ const ResultHeader = styled.h1<{ win: boolean }>`
   ${ p => `color: var(--${ p.win ? 'win' : 'loss' }-color);` }
   margin-bottom: 0;
 `;
-const ResultText = styled.strong<{ win: boolean }>`
-  ${ p => `color: var(--${ p.win ? 'win' : 'loss' }-color);` }
+const ResultText = styled.strong<{ win: boolean, difficultyReached?: Difficulty | null }>`
+  ${ p => p.win && p.difficultyReached ? ScoreUtil.getScoreStyles(p.difficultyReached) : '' }
 `;
