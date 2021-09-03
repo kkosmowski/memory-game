@@ -11,7 +11,8 @@ interface Props {
 export function EndScreen({ data, onRestart }: Props): ReactElement {
   const title = <ResultHeader win={ data.won }>{ data.won ? 'You\'ve won!' : 'You\'ve lost :(' }</ResultHeader>;
   const score = data.won ? null : <p>Your score: { data!.points.score }/{ data!.points.total }</p>;
-  const winMessage = <>It took you <ResultText win={ true }>{ data.elapsed }</ResultText> to finish the game.</>;
+  const winMessage = <>It took you <ResultText win={ true }>{ data.elapsed }</ResultText> to finish
+    the <strong>{ data.difficulty }</strong> game.</>;
   const lossMessage = <>You didn't manage to finish the game in <ResultText
     win={ false }>{ data.elapsed }</ResultText>.</>;
   return (

@@ -1,1 +1,1 @@
-export const NUMBER_OF_SCORES = 6;
+export const NUMBER_OF_SCORES = 20;

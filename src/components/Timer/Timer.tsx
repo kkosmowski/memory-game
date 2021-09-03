@@ -11,7 +11,7 @@ export function Timer({ initialTime, onTimerEnd }: TimerProps): ReactElement {
 
   useEffect(() => {
     let currentTime = initialTime;
-    const interval = 1000;
+    const interval = 100;
     const decreaseTime = () => {
       currentTime -= interval / 1000;
       setPercentage(currentTime / initialTime * 100);

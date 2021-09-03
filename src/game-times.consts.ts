@@ -10,28 +10,28 @@ import { Difficulty } from './enums/difficulty.enum';
 export const gameTimes = {
   [BoardSize.ExtraSmall]: {
     [Difficulty.Easy]: 11,
-    [Difficulty.Medium]: 9,
-    [Difficulty.Hard]: 7.3,
+    [Difficulty.Medium]: 8.9,
+    [Difficulty.Hard]: 7.1,
   },
   [BoardSize.Small]: {
-    [Difficulty.Easy]: 23, // v4
-    [Difficulty.Medium]: 19.4, // v4
-    [Difficulty.Hard]: 16.8, // v4
+    [Difficulty.Easy]: 21.6,
+    [Difficulty.Medium]: 18.4,
+    [Difficulty.Hard]: 15.6,
   },
   [BoardSize.Medium]: {
-    [Difficulty.Easy]: 51.7, // v4
-    [Difficulty.Medium]: 44.5, // v4
-    [Difficulty.Hard]: 35, // v34
+    [Difficulty.Easy]: 48.6,
+    [Difficulty.Medium]: 41,
+    [Difficulty.Hard]: 33.7,
   },
   [BoardSize.Large]: {
-    [Difficulty.Easy]: 84, // v2
-    [Difficulty.Medium]: 70, // v1
-    [Difficulty.Hard]: 65, // v1
+    [Difficulty.Easy]: 85, // v3
+    [Difficulty.Medium]: 73.6, // v3
+    [Difficulty.Hard]: 63, // v2
   },
-  [BoardSize.ExtraLarge]: { // @todo
-    [Difficulty.Easy]: 15, // v0
-    [Difficulty.Medium]: 10, // v0
-    [Difficulty.Hard]: 8, // v0
+  [BoardSize.ExtraLarge]: {
+    [Difficulty.Easy]: 147, // v1
+    [Difficulty.Medium]: 131, // v1
+    [Difficulty.Hard]: 116.5, // v1
   },
   [BoardSize.Huge]: { // @todo
     [Difficulty.Easy]: 15, // v0
